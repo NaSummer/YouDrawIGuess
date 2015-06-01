@@ -1,8 +1,8 @@
-package client.customclass;
+package customclass;
 
 /**
  * @author Qiufan(Andy) Xu 
- * @date CreateTime£ºMay 31, 2015 11:30:37 AM 
+ * @date CreateTime: May 31, 2015 11:30:37 AM 
  * @version 1.0 
  * @param 
  */

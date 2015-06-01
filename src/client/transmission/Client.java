@@ -4,13 +4,14 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
 
-import client.customclass.Message;
-import client.customclass.Room;
+import tool.Tool;
+import customclass.Message;
+import customclass.Room;
 
 /**
  * 
  * @author Qiufan(Andy) Xu 
- * @date CreateTime£ºMay 30, 2015 11:34:55 PM 
+ * @date CreateTime: May 30, 2015 11:34:55 PM 
  * @version 1.0 
  */
 
@@ -22,7 +23,7 @@ public class Client {
 	private String username;
 
 	public Client() {
-		this.DEVICE_ID = generateDeviceID();
+		this.DEVICE_ID = Tool.generateID();
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -206,17 +207,6 @@ public class Client {
 	
 	
 	/* ========private method======== */
-	/**
-	 * Generate DeviceID Randomly
-	 * @return long
-	 */
-	private long generateDeviceID() {
-		Random random = new Random(System.currentTimeMillis());
-		long tmp;
-		do {
-			tmp = random.nextLong();
-		} while (tmp < Integer.MAX_VALUE);
-		return tmp;
-	}
+	
 	
 }
