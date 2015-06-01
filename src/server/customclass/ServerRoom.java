@@ -25,7 +25,7 @@ public class ServerRoom extends Room{
 	 * Add user to Room with not ready state. 
 	 * If the user is the first one joined room, he will be the painter, 
 	 * otherwise the guesser.
-	 * @param String username
+	 * @param 
 	 * @return If Room is full, return false, otherwise return true.
 	 */
 	public boolean addUser(String username) {
@@ -66,7 +66,7 @@ public class ServerRoom extends Room{
 	
 	/**
 	 * remove user from Room by username
-	 * @param String username
+	 * @param 
 	 * @return If user has not been in Room, return false, otherwise return true
 	 */
 	public boolean removeUser(String username) {
@@ -82,7 +82,7 @@ public class ServerRoom extends Room{
 	
 	/**
 	 * get user ready by username
-	 * @param String username
+	 * @param 
 	 * @return If user isn't in Room, return false, otherwise return true
 	 */
 	public boolean getUserReady(String username) {
@@ -98,7 +98,7 @@ public class ServerRoom extends Room{
 	
 	/**
 	 * cancel user ready by username
-	 * @param String username
+	 * @param 
 	 * @return If user isn't in Room, return false, otherwise return true
 	 */
 	public boolean cancelUserReady(String username) {
@@ -116,7 +116,7 @@ public class ServerRoom extends Room{
 	/* ======== Private Method ======== */
 	/**
 	 * find user in userList by username
-	 * @param String username
+	 * @param 
 	 * @return If not find user, return -1, otherwise return index.
 	 */
 	private int findUser(String username) {

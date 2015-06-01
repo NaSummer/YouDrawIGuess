@@ -32,7 +32,7 @@ public class Client {
 	/* ========login======== */
 	/**
 	 * login server
-	 * @param String serverAddress, String username, String password
+	 * @param 
 	 * @return [boolean] whether login successful
 	 */
 	public boolean login(String serverAddress, String username, String password) {
@@ -45,7 +45,7 @@ public class Client {
 	/* ========register======== */
 	/**
 	 * register a new user in server
-	 * @param String serverAddress, String username, String password
+	 * @param 
 	 * @return [boolean] whether register successful
 	 */
 	public boolean register(String serverAddress, String username, String password) {
@@ -55,7 +55,7 @@ public class Client {
 	
 	/**
 	 * check whether username has existed in server
-	 * @param String serverAddress, String username
+	 * @param 
 	 * @return [boolean] whether username has existed in server
 	 */
 	public boolean isUserExisted(String serverAddress, String username) {
@@ -92,7 +92,7 @@ public class Client {
 	
 	/**
 	 * joinRoom
-	 * @param [Room]
+	 * @param 
 	 * @return [boolean] whether join a room successfully
 	 */
 	public boolean joinRoom(Room room) {
@@ -125,7 +125,7 @@ public class Client {
 	/* ====Message==== */
 	/**
 	 * sendMessage
-	 * @param String message
+	 * @param 
 	 * @return is successful
 	 */
 	public boolean sendMessage(String str) {
@@ -188,7 +188,7 @@ public class Client {
 	/* ====Point====*/
 	/**
 	 * send Point List
-	 * @param ArrayList<Point>
+	 * @param 
 	 * @return [boolean] is successful
 	 */
 	public boolean sendPointList(ArrayList<Point> points) {

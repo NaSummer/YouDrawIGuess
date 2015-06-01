@@ -22,7 +22,7 @@ public class User {
 	
 	/**
 	 * change user state to a room
-	 * @param Room room
+	 * @param 
 	 * @return If the user is in a room, return false, otherwise true.
 	 */
 	public boolean joinRoom(Room room) {
