@@ -2,7 +2,7 @@ package client.login;
 
 /**
  * @author Qiufan(Andy) Xu 
- * @date CreateTime£ºMay 30, 2015 11:34:55 PM 
+ * @date CreateTime: May 30, 2015 11:34:55 PM 
  * @version 1.0 
  */
 
