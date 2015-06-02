@@ -52,6 +52,7 @@ public class ServerRoom extends Room{
 			} else {
 				
 				System.err.println("User() has been in the Room() already");
+				return false;
 				
 			}
 			
