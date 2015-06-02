@@ -16,7 +16,7 @@ public class UserState extends User{
 	public UserState(String username, boolean isPainter) {
 		/**
 		 * 
-		 * @param String username, boolean isPainter
+		 * @param 
 		 */
 		super(username);
 		this.IS_PAINTER = isPainter;
