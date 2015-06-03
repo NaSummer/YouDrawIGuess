@@ -7,6 +7,8 @@ import client.draw.MessageListener;
 import client.transmission.Client;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -16,7 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class GuessPanel extends Application{
+public class GuessPanel extends Application implements EventHandler<ActionEvent>{
 Client client;
 GraphicsContext gc;
 TextField member;
@@ -25,6 +27,8 @@ TextField sendMessage;
 Label wrong;
 Label showWinner;
 Button sendButton;
+Button readyButton;
+Button cancelReadyButton;
 Point poFrom;
 Point poTo;
 
@@ -74,6 +78,17 @@ Point poTo;
         sendButton.setLayoutX(620);
         sendButton.setLayoutY(530);
         sendButton.setText("SEND");
+        
+        readyButton = new Button("START");
+        readyButton.setPrefSize(200, 150);
+        readyButton.setLayoutX(300);
+        readyButton.setLayoutY(300);
+        
+        cancelReadyButton = new Button("START");
+        cancelReadyButton.setPrefSize(200, 150);
+        cancelReadyButton.setLayoutX(300);
+        cancelReadyButton.setLayoutY(300);
+        cancelReadyButton.setVisible(false);
 	    
 	    showWinner = new Label();
 	    showWinner.setPrefSize(400, 300);
@@ -88,13 +103,32 @@ Point poTo;
 		root.getChildren().add(sendMessage);
 		root.getChildren().add(showWinner);
 		root.getChildren().add(sendButton);
+		root.getChildren().add(readyButton);
 		root.getChildren().add(wrong);
 		stage.setScene(new Scene(root));
 		stage.show();
 		receive();
-		new Thread(new MessageListener(client, sendMessage)).start();
+		new Thread(new MessageListener(client, showMessage)).start();
+	}
+	@Override
+	public void handle(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if(e.getSource()==sendButton){
+			client.sendMessage(sendMessage.getText());
+		}
+		if(e.getSource()==readyButton){
+			client.getReady();
+			readyButton.setVisible(false);
+			cancelReadyButton.setVisible(true);
+		}
+		if(e.getSource()==cancelReadyButton){
+			client.cancelReady();
+			cancelReadyButton.setVisible(false);
+			readyButton.setVisible(true);
+		}
 	}
 	
+	/*------Receive thread--------*/
 	public void receive() {
 		// TODO Auto-generated method stub
 		new Thread(){
@@ -109,7 +143,6 @@ Point poTo;
 						@Override
 						public void run() {
 							for (int i = 0; i < receivePoints.size() - 1; i++) {
-								System.out.println("只是画不出来。");
 								gc.strokeLine(receivePoints.get(i).getX(),receivePoints.get(i).getY(),receivePoints.get(i+1).getX(), receivePoints.get(i+1).getY());
 								}
 						}
