@@ -3,7 +3,6 @@ package customclass;
 import java.util.ArrayList;
 import java.util.List;
 
-import server.customclass.HandleUser;
 import tool.Tool;
 
 /**
@@ -19,7 +18,7 @@ public class Room {
 	public final static int MAX_NUM = 6;
 	
 	protected long serverRoomID;
-	protected List<HandleUser> userList = new ArrayList<HandleUser>();
+	protected List<User> userList = new ArrayList<User>();
 	
 	public Room() {
 		
@@ -50,7 +49,7 @@ public class Room {
 	}
 	
 	public void addUser(User user) {
-		userList.add( (HandleUser) user );
+		userList.add(user);
 	}
 	
 }

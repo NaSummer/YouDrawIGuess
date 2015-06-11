@@ -10,7 +10,6 @@ import customclass.Message;
 import customclass.Room;
 import customclass.RoomState;
 import customclass.User;
-import customclass.UserRecurrence;
 
 /**
  * @author Qiufan(Andy) Xu 
@@ -135,7 +134,9 @@ public class Packet implements Serializable{
 				isReady = true;
 			}
 			
-			UserRecurrence user = new UserRecurrence(stringArray[i], isPainter, isReady);
+			User user = new User(stringArray[i]);
+			user.userRecurrence(isPainter, isReady);
+//			UserRecurrence user = new UserRecurrence(stringArray[i], isPainter, isReady);
 			
 			room.addUser((User)user);
 		}

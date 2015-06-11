@@ -4,12 +4,11 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import server.customclass.HandleUser;
 import tool.Questions;
 import transfer.Packet;
-import transfer.SetPacketData;
 import customclass.Message;
 import customclass.Room;
+import customclass.User;
 
 
 /**
@@ -98,7 +97,7 @@ public class HandleRoom extends Room implements Runnable{
 //				}
 				
 				/* create */
-				HandleUser user = new HandleUser(handleStream.username);
+				User user = new User(handleStream.username);
 				user.joinRoom(this);
 				userList.add(user);
 				handleStreamList.add(handleStream);
