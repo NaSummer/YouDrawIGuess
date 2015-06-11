@@ -40,7 +40,9 @@ public class HandleRoom extends Room implements Runnable{
 		
 		while (!handleStreamList.isEmpty()) {
 			
+			
 			while (!messagesList.isEmpty()) {
+				System.out.println("=============[Server_HandleRoom_run]");
 				Packet packet = new Packet(Packet.ROOM_MESSAGE, messagesList.get(0).USERMANE);
 				packet.setMessage(messagesList.get(0).CONTENT);
 				messagesList.remove(0);
@@ -48,11 +50,13 @@ public class HandleRoom extends Room implements Runnable{
 					handleStreamList.get(i).sendPacket(packet);
 				}
 				
-				isWin(packet.getMessage());
+				if (isGameStrat) {
+					isWin(packet.getMessage());
+				}
 					
 			}
 			
-			while (System.currentTimeMillis()-startTime>GAME_TIME) {
+			while ((isGameStrat)&&(System.currentTimeMillis()-startTime>GAME_TIME)) {
 				Packet packet = new Packet(Packet.TIME_OUT, "SYSTEM");
 				for (int i = 0; i < handleStreamList.size(); i++) {
 					handleStreamList.get(i).sendPacket(packet);
@@ -71,6 +75,12 @@ public class HandleRoom extends Room implements Runnable{
 				resetGame();
 			}
 			
+			try {
+				HandleStream.sleep(500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 	}
@@ -102,7 +112,8 @@ public class HandleRoom extends Room implements Runnable{
 				userList.add(user);
 				handleStreamList.add(handleStream);
 				
-				sendRoomState(handleStream);
+//				sendRoomState(handleStream);
+				sendRoomStateToAll();
 				
 				return true;
 				
@@ -143,7 +154,8 @@ public class HandleRoom extends Room implements Runnable{
 	private boolean removeUserStream(String username) {
 		int indexOfUser = findUserStream(username);
 		if (indexOfUser != -1) {
-			sendRoomState(handleStreamList.get(indexOfUser));
+//			sendRoomState(handleStreamList.get(indexOfUser));
+			sendRoomStateToAll();
 			handleStreamList.remove(indexOfUser);
 			return true;
 		} else {
@@ -192,6 +204,7 @@ public class HandleRoom extends Room implements Runnable{
 			question = q.getQuestion();
 			winner = null;
 			startTime = System.currentTimeMillis();
+			sendRoomStateToAll();
 			new Thread(new HandlePoints()).start();
 		}
 	}
@@ -214,7 +227,7 @@ public class HandleRoom extends Room implements Runnable{
 				return i;
 			}
 		}
-		System.err.println("[findUser] Can't find User("+username+") in Room("+ROOM_ID+")");
+		System.out.println("[findUser] Can't find User("+username+") in Room("+ROOM_ID+")");
 		return -1;
 	}
 	
@@ -282,5 +295,29 @@ public class HandleRoom extends Room implements Runnable{
 			}
 		}
 	}
+	
+//	class MessageSender extends Thread {
+//		
+//		@Override
+//		public void run() {
+//			while (true) {
+//				
+//				while (!messagesList.isEmpty()) {
+//					Packet packet = new Packet(Packet.ROOM_MESSAGE, messagesList.get(0).USERMANE);
+//					packet.setMessage(messagesList.get(0).CONTENT);
+//					messagesList.remove(0);
+//					for (int i = 0; i < handleStreamList.size(); i++) {
+//						handleStreamList.get(i).sendPacket(packet);
+//					}
+//				}
+//				try {
+//					MessageSender.sleep(500);
+//				} catch (InterruptedException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			}
+//		}
+//	}
 	
 }

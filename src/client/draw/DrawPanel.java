@@ -9,9 +9,11 @@ import java.util.ArrayList;
 
 import client.transmission.Client;
 import javafx.application.Application;
-import javafx.application.Platform;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -19,6 +21,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -31,13 +35,13 @@ public class DrawPanel extends Application implements EventHandler<ActionEvent>{
 	Point ptTo;
 	GraphicsContext gc;
 	Button sendButton;
-	Button startButton;
-	TextField member;
+	public Button startButton;
+	public TextField member;
 	public TextField showMessage;
 	TextField sendMessage;
 	Label question;
-	Client client;
-	Label winner;
+	public Client client;
+	public Label winner;
 	ArrayList<Point> sendArrayListPoints;
 	
 	public DrawPanel(Client client, Lobby lobby){
@@ -60,6 +64,7 @@ public class DrawPanel extends Application implements EventHandler<ActionEvent>{
 		member.setPrefSize(200, 200);
 		member.setLayoutX(620);
 		member.setLayoutY(20);
+		member.setAlignment(Pos.TOP_LEFT);
 		
 		showMessage = new TextField();
 		showMessage.setEditable(false);
@@ -68,7 +73,7 @@ public class DrawPanel extends Application implements EventHandler<ActionEvent>{
 		showMessage.setLayoutY(230);
 		
 		sendMessage = new TextField();
-//        sendMessage.setPrefSize(200, 260);
+//      sendMessage.setPrefSize(200, 260);
 		sendMessage.setLayoutX(620);
 		sendMessage.setLayoutY(500);
 		sendMessage.setPrefWidth(200);
@@ -95,6 +100,22 @@ public class DrawPanel extends Application implements EventHandler<ActionEvent>{
 		winner.setLayoutX(300);
 		winner.setLayoutY(300);
 		winner.setFont(javafx.scene.text.Font.font("Times New Roman", 40));
+		
+		sendButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				client.sendMessage(sendMessage.getText());
+				sendMessage.setText("");
+			}
+		});
+		
+		startButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				startButton.setVisible(false);
+				client.startGame();
+			}
+		});
 		
 		canvas.setOnMousePressed(new EventHandler<MouseEvent>() {            
 			public void handle(MouseEvent me) {                 
@@ -131,26 +152,133 @@ public class DrawPanel extends Application implements EventHandler<ActionEvent>{
 		root.getChildren().add(question);
 		root.getChildren().add(winner);
 		
+		
+		sendMessage.setOnKeyReleased(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent arg0) {
+				if (arg0.getCode()==KeyCode.ENTER) {
+					client.sendMessage(sendMessage.getText());
+					sendMessage.setText("");
+				}
+			}
+		}); 
+		
+		
+		Task<Void> stateListener = new Task<Void>() {
+			@Override
+			protected Void call() throws Exception {
+				while (client.getRoomID()!=0) {
+					
+					StringBuilder sb = new StringBuilder();
+					
+					for(int i=0;i<client.getUserState().size();i++){
+						String ready;
+						if (client.getUserState().get(i).isReady()) {
+							ready = ": Ready";
+						} else {
+							ready = ": Waiting";
+						}
+						
+						sb.append(client.getUserState().get(i).USERNAME + ready + "\n");
+						
+//						/* 自动滚动到最后一行 */
+//						member.positionCaret(member.getText().length());
+					}
+					
+					updateMessage(sb.toString());
+					
+					if(client.isGameStart()){
+						startButton.setVisible(false);
+					}
+					
+					Thread.sleep(500);
+					
+				}
+				return null;
+			}
+		};
+		
+		Task<Void> messageListener = new Task<Void>() {
+			@Override
+			protected Void call() throws Exception {
+				
+				StringBuilder sb = new StringBuilder();
+				
+				while (client.getRoomID()!=0) {
+					
+					while (client.getMessage() != null) {
+						
+						sb.append("[" + client.getMessage().USERMANE + "] said:\n  -> " + client.getMessage().CONTENT + "\n\n");
+						
+						updateMessage(sb.toString());
+//						/* 自动滚动到最后一行 */
+//						showMessage.positionCaret(showMessage.getText().length());
+					}
+					
+					try {
+						Thread.sleep(500);
+					} catch (InterruptedException e) {
+						System.err.println("[MessagesListener] Fail to sleep MessagesListener");
+//						e.printStackTrace();
+					}
+				}
+				return null;
+			}
+			
+		};
+		
+		Task<Void> win = new Task<Void>() {
+			@Override
+			protected Void call() throws Exception {
+				while (!client.isTimeOut()) {
+					if(client.whoWin()!=null){
+						updateMessage(client.whoWin());
+					}
+					
+					try {
+						Thread.sleep(500);
+					} catch (InterruptedException e) {
+						System.err.println("[Client_Win] Fail to sleep");
+//						e.printStackTrace();
+					}
+				}
+				
+				if(client.isTimeOut()){
+					updateMessage("Time Out & No Winner");
+				}
+				return null;
+			}
+			
+		};
+		
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
 			public void handle(WindowEvent arg0) {
 				client.exitRoom();
 				primaryStage.close();
 				lobby.stage.show();
+				stateListener.cancel();
+				messageListener.cancel();
+				win.cancel();
 			}
 		});
+		
+		member.textProperty().bind(stateListener.messageProperty());
+		showMessage.textProperty().bind(messageListener.messageProperty());
+		winner.textProperty().bind(win.messageProperty());
 		
 		primaryStage.setScene(new Scene(root));
 		primaryStage.setResizable(false);
 		primaryStage.show(); 
-		new Thread(new MessageListener(client, showMessage)).start();
-		new Thread(new StateListener(client, member,startButton)).start();
-		new Thread(new Win(client,winner)).start();
+		new Thread(messageListener).start();
+		new Thread(stateListener).start();
+		new Thread(win).start();
 	}
 	
 	public void drawShapesAndSendPoints() {
 		//use client API to send points;
 		client.sendPointList(sendArrayListPoints);
+		sendArrayListPoints.clear();
 		gc.strokeLine(ptFrom.x, ptFrom.y, ptTo.x, ptTo.y);
 	}
 	

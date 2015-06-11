@@ -33,6 +33,8 @@ public class HandleStream extends Thread{
 				Packet packet = (Packet) in.readObject();
 				client.pulseListener.setLastPacketTime(System.currentTimeMillis());
 				
+				System.out.println("[Client_ReceivePacket] "+packet.TYPE);
+				
 				switch (packet.TYPE) {
 //				case Packet.PULSE:
 //					client.pulseListener.setLastPacketTime(System.currentTimeMillis());

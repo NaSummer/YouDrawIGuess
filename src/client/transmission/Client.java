@@ -143,6 +143,7 @@ public class Client {
 	 * @return [ArrayList<Room>]
 	 */
 	public ArrayList<RoomState> getRoomList() {
+//		System.out.println("[Client_getRoomList]");
 		Packet packet = new Packet(Packet.ASK_ROOM_LIST, username);
 		sendPacket(packet);
 		return (ArrayList<RoomState>) roomList;
@@ -153,6 +154,7 @@ public class Client {
 	 * @return [boolean] whether create a room successfully
 	 */
 	public boolean createRoom() {
+//		System.out.println("[Client_createRoom]");
 		Packet packet = new Packet(Packet.CREARE_ROOM, username);
 		sendPacket(packet);
 		
@@ -174,6 +176,7 @@ public class Client {
 	 * @return [boolean] whether join a room successfully
 	 */
 	public boolean joinRoom(long roomID) {
+		System.out.println("[Client_joinRoom]");
 		SetPacketData packet = new SetPacketData(Packet.JOIN_ROOM, username);
 		packet.setRoomID(roomID);
 		sendPacket(packet);
@@ -204,6 +207,7 @@ public class Client {
 	 * @return [boolean] is successful
 	 */
 	public boolean exitRoom() {
+//		System.out.println("[Client_exitRoom]");
 		SetPacketData packet = new SetPacketData(Packet.EXIT_ROOM, username);
 		sendPacket(packet);
 		
@@ -230,6 +234,7 @@ public class Client {
 	 * @return is successful
 	 */
 	public void sendMessage(String str) {
+		System.out.println("=========================================[Client_sendMessage]");
 		SetPacketData packet = new SetPacketData(Packet.ROOM_MESSAGE, username);
 		packet.setMessage(str);
 		sendPacket(packet);
@@ -243,6 +248,7 @@ public class Client {
 	 */
 	public Message getMessage() {
 		if (!messagesList.isEmpty()) {
+			System.out.println("[Client_getMessage]");
 			Message message = messagesList.get(0);
 			messagesList.remove(0);
 			return message;
@@ -258,6 +264,7 @@ public class Client {
 	 * @return [boolean] is successful
 	 */
 	public void getReady() {
+		System.out.println("=============================[Client_getReady]");
 		SetPacketData packet = new SetPacketData(Packet.GET_READY, username);
 		sendPacket(packet);
 	}
@@ -267,11 +274,13 @@ public class Client {
 	 * @return [boolean] is successful
 	 */
 	public void cancelReady() {
+		System.out.println("========================[Client_cancelReady]");
 		SetPacketData packet = new SetPacketData(Packet.CANCEL_READY, username);
 		sendPacket(packet);
 	}
 	
 	public void startGame() {
+		System.out.println("==================[Client_startGame]");
 		if (isPainter()) {
 			Packet packet = new Packet(Packet.START_GAME, username);
 			sendPacket(packet);
@@ -279,10 +288,12 @@ public class Client {
 	}
 	
 	public boolean isGameStart() {
+//		System.out.println("==================[Client_isGameStart]");
 		return isGameStart;
 	}
 	
 	public String getRequirement() {
+		System.out.println("=====================[Client_getRequirement]");
 		if (isPainter()) {
 			return requirement;
 		} else {
@@ -295,6 +306,7 @@ public class Client {
 	 * @return [String] If nobody win, return null, otherwise return winner username
 	 */
 	public String whoWin() {
+//		System.out.println("[Client_whoWin]");
 		if (winner!=null) {
 			String winner = this.winner;
 			isTimeout = false;
@@ -309,6 +321,7 @@ public class Client {
 	 * @return [boolean] If time is out, return true.
 	 */
 	public boolean isTimeOut() {
+//		System.out.println("[Client_isTimeOut]");
 		if (isTimeout) {
 			winner = null;
 			return true;
@@ -322,6 +335,7 @@ public class Client {
 	 * @return Room
 	 */
 	public long getRoomID() {
+//		System.out.println("[Client_getRoomID]");
 		if (room!=null) {
 			return this.room.getServerRoomID();
 		} else {
@@ -335,6 +349,7 @@ public class Client {
 	 * @return 
 	 */
 	public List<User> getUserState() {
+//		System.out.println("[Client_getUserState]");
 		return room.getUserList();
 	}
 	
@@ -346,6 +361,7 @@ public class Client {
 	 */
 	public boolean sendPointList(ArrayList<Point> points) {
 		this.sendingPointList.addAll(points);
+		System.out.println("[Client_sendPointList]");
 		return true;
 	}
 	
@@ -357,6 +373,7 @@ public class Client {
 		ArrayList<Point> list = new ArrayList<Point>();
 		list.addAll(receivedPointList);
 		receivedPointList.clear();
+//		System.out.println("[Client_getPointList]");
 		return list;
 	}
 	
@@ -400,6 +417,7 @@ public class Client {
 		try {
 			out.writeObject(packet);
 			out.flush();
+			System.out.println("[Client] sendPacket");
 		} catch (IOException e) {
 			System.err.println("[Client_sendPacket]");
 //			e.printStackTrace();

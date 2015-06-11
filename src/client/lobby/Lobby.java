@@ -15,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class Lobby extends Application implements EventHandler<ActionEvent>{
 	
@@ -53,6 +54,14 @@ public class Lobby extends Application implements EventHandler<ActionEvent>{
 		root.getChildren().add(canvas);
 		root.getChildren().add(createNewRoom);
 		root.getChildren().add(refreshRoom);
+		
+		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			@Override
+			public void handle(WindowEvent arg0) {
+				stage.close();
+			}
+		});
+		
 		stage.setScene(new Scene(root));
 		stage.setResizable(false);
 		stage.show();

@@ -12,6 +12,7 @@ import client.transmission.Client;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -20,6 +21,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -116,6 +119,15 @@ public class LoginFX extends Application {
         grid.add(actiontarget, 1, 6);
         
 //        pwBox.setOnAction(new ());
+        
+        pwBox.setOnKeyReleased(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent arg0) {
+				if (arg0.getCode()==KeyCode.ENTER) {
+					trySignIn(serverAddressBox.getText(), userTextField.getText(), pwBox.getText());
+				}
+			}
+		}); 
         
         btnSignIn.setOnAction(new EventHandler<ActionEvent>() {
             @Override

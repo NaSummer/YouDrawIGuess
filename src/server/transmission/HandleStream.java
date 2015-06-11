@@ -62,6 +62,7 @@ class HandleStream extends Thread{
 				Packet packet = (Packet) in.readObject();
 				pulseListener.setLastPacketTime(System.currentTimeMillis());
 				
+				System.out.println("[Server_HandleStream] "+packet.TYPE+" - "+packet.USERNAME);
 				
 				switch (packet.TYPE) {
 				case Packet.ASK_ROOM_LIST:
@@ -77,6 +78,7 @@ class HandleStream extends Thread{
 					break;
 					
 				case Packet.ROOM_MESSAGE:
+					System.out.println("[Server_HandleStream_switch] "+packet.TYPE+" - "+packet.USERNAME);
 					this.room.sendMessage(packet.getMessage());
 					break;
 					
@@ -138,6 +140,7 @@ class HandleStream extends Thread{
 		backPacket.setRoom(room);
 		sendPacket(backPacket);
 		
+		roomThread.start();
 //		isWaiting = true;TODO
 		
 	}
@@ -172,6 +175,7 @@ class HandleStream extends Thread{
 	
 	protected void sendPacket(Packet packet) {
 		try {
+			System.out.println("[sendPacket] "+packet.TYPE);
 			out.writeObject(packet);
 			out.flush();
 		} catch (IOException e) {
