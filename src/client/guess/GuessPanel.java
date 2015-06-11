@@ -37,9 +37,9 @@ Point poTo;
 		launch();
 	}
 
-//	GuessPanel(Client client){
-//		this.client=client;
-//	}
+	public GuessPanel(Client client){
+		this.client=client;
+	}
 	@Override
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
