@@ -10,8 +10,9 @@ package client.login;
 public class StartClient {
 
 	/*  */
-	public static void main(String[] args) {
-		new Login(args);
-	}
+//	public static void main(String[] args) {
+//		new Login(args);
+//		
+//	}
 
 }
