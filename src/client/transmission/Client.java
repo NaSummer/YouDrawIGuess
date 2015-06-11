@@ -52,6 +52,7 @@ public class Client {
 	protected Room room;
 	
 	protected String requirement;
+	protected boolean isGameStart;
 	
 	protected List<Message> messagesList = new ArrayList<Message>();
 	
@@ -268,6 +269,17 @@ public class Client {
 	public void cancelReady() {
 		SetPacketData packet = new SetPacketData(Packet.CANCEL_READY, username);
 		sendPacket(packet);
+	}
+	
+	public void startGame() {
+		if (isPainter()) {
+			Packet packet = new Packet(Packet.START_GAME, username);
+			sendPacket(packet);
+		}
+	}
+	
+	public boolean isGameStart() {
+		return isGameStart;
 	}
 	
 	public String getRequirement() {

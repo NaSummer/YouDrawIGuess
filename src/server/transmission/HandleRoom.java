@@ -49,12 +49,8 @@ public class HandleRoom extends Room implements Runnable{
 					handleStreamList.get(i).sendPacket(packet);
 				}
 				
-				if (isWin(packet.getMessage())) {
-					SetPacketData packet2 = new SetPacketData(Packet.WINNER, packet.getMessage().USERMANE);
-					for (int i = 0; i < handleStreamList.size(); i++) {
-						handleStreamList.get(i).sendPacket(packet2);
-					}
-				}
+				isWin(packet.getMessage());
+					
 			}
 			
 			while (System.currentTimeMillis()-startTime>GAME_TIME) {
@@ -67,7 +63,7 @@ public class HandleRoom extends Room implements Runnable{
 				
 			}
 			
-			while (winner!=null) {
+			if (winner!=null) {
 				SetPacketData packet = new SetPacketData(Packet.WINNER, winner);
 				for (int i = 0; i < handleStreamList.size(); i++) {
 					handleStreamList.get(i).sendPacket(packet);
@@ -106,6 +102,8 @@ public class HandleRoom extends Room implements Runnable{
 				user.joinRoom(this);
 				userList.add(user);
 				handleStreamList.add(handleStream);
+				
+				sendRoomState(handleStream);
 				
 				return true;
 				
@@ -146,6 +144,7 @@ public class HandleRoom extends Room implements Runnable{
 	private boolean removeUserStream(String username) {
 		int indexOfUser = findUserStream(username);
 		if (indexOfUser != -1) {
+			sendRoomState(handleStreamList.get(indexOfUser));
 			handleStreamList.remove(indexOfUser);
 			return true;
 		} else {
@@ -163,6 +162,7 @@ public class HandleRoom extends Room implements Runnable{
 		int indexOfUser = findUser(username);
 		if (indexOfUser != -1) {
 			userList.get(indexOfUser).getReady();
+			sendRoomStateToAll();
 			return true;
 		} else {
 			System.err.println("[getUserReady] User("+username+") isn't in the Room("+ROOM_ID+")");
@@ -179,6 +179,7 @@ public class HandleRoom extends Room implements Runnable{
 		int indexOfUser = findUser(username);
 		if (indexOfUser != -1) {
 			userList.get(indexOfUser).cancelReady();
+			sendRoomStateToAll();
 			return true;
 		} else {
 			System.err.println("[cancelUserReady] User("+username+") isn't in the Room("+ROOM_ID+")");
@@ -199,6 +200,8 @@ public class HandleRoom extends Room implements Runnable{
 	public void sendMessage(Message message) {
 		messagesList.add(message);
 	}
+	
+	
 	
 	/* ======== Private Method ======== */
 	/**
@@ -243,9 +246,22 @@ public class HandleRoom extends Room implements Runnable{
 	
 	private boolean isWin(Message message) {
 		if (message.CONTENT.toLowerCase().contains(question.toLowerCase())) {
+			winner = message.USERMANE;
 			return true;
 		}
 		return false;
+	}
+	
+	private void sendRoomState (HandleStream handleStream) {
+		SetPacketData packet = new SetPacketData(Packet.ROOM_STATE, "SYSTEM");
+		packet.setRoom(this);
+		handleStream.sendPacket(packet);
+	}
+	
+	private void sendRoomStateToAll() {
+		for (int i = 0; i < handleStreamList.size(); i++) {
+			sendRoomState(handleStreamList.get(i));
+		}
 	}
 	
 	class HandlePoints extends Thread {
