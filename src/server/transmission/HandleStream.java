@@ -59,7 +59,7 @@ class HandleStream extends Thread{
 //					e.printStackTrace();
 				}
 				
-				GetPacketData packet = (GetPacketData) in.readObject();
+				Packet packet = (Packet) in.readObject();
 				pulseListener.setLastPacketTime(System.currentTimeMillis());
 				
 				
@@ -118,7 +118,7 @@ class HandleStream extends Thread{
 	}
 	
 	private void sendRoomList() {
-		SetPacketData backPacket = new SetPacketData(Packet.ROOM_LIST, username);
+		Packet backPacket = new Packet(Packet.ROOM_LIST, username);
 		backPacket.setRoomList(socketListener.roomList);
 		sendPacket(backPacket);
 	}
@@ -134,7 +134,7 @@ class HandleStream extends Thread{
 		
 		room.addUser(this);
 		
-		SetPacketData backPacket = new SetPacketData(Packet.ROOM_STATE, username);
+		Packet backPacket = new Packet(Packet.ROOM_STATE, username);
 		backPacket.setRoom(room);
 		sendPacket(backPacket);
 		
@@ -148,7 +148,7 @@ class HandleStream extends Thread{
 				this.room = socketListener.roomList.get(i);
 				this.room.addUser(this);
 				
-				SetPacketData backPacket = new SetPacketData(Packet.ROOM_STATE, username);
+				Packet backPacket = new Packet(Packet.ROOM_STATE, username);
 				backPacket.setRoom(this.room);
 				sendPacket(backPacket);
 			}
@@ -158,7 +158,7 @@ class HandleStream extends Thread{
 	private void startGame() {
 		if (room.getUserList().get(0).USERNAME.equals(username)) {
 			room.startGame();
-			SetPacketData packet = new SetPacketData(Packet.START_GAME, username);
+			Packet packet = new Packet(Packet.START_GAME, username);
 			packet.setQuestion(room.question);
 			sendPacket(packet);
 		}

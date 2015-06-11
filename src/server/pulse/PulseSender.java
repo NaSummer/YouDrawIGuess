@@ -1,9 +1,7 @@
 package server.pulse;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.Socket;
 
 import server.transmission.SocketListener;
 import transfer.Packet;
@@ -21,6 +19,7 @@ public class PulseSender extends Thread {
 	ObjectOutputStream out;
 	SocketListener socketListener;
 	final int INTERVAL_TIME = 20*1000;
+	boolean isConnected = true;
 	
 	public PulseSender(ObjectOutputStream oos, String username) {
 		this.out = oos;
@@ -29,7 +28,7 @@ public class PulseSender extends Thread {
 	
 	@Override
 	public void run() {
-		while (true) {
+		while (isConnected) {
 			
 			try {
 				
@@ -39,9 +38,16 @@ public class PulseSender extends Thread {
 				
 			} catch (IOException e) {
 				System.err.println("[PulseSender] Fail to send back pulse.");
+				isConnected = false;
 //				e.printStackTrace();
 			}
 			
+			try {
+				PulseSender.sleep(INTERVAL_TIME);
+			} catch (InterruptedException e) {
+				System.err.println("[Server_PulseSender] Fail to sleep");
+//				e.printStackTrace();
+			}
 			
 			
 		}

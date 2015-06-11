@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 
 import javax.swing.JButton;
@@ -20,6 +22,8 @@ import client.lobby.Lobby;
 import client.transmission.Client;
 
 class Login extends JFrame{
+	
+	private Client client;
 	
 	private JLabel JLServerAddress;
 	private JLabel JLUserID;
@@ -41,6 +45,10 @@ class Login extends JFrame{
 		btnLogin = new JButton("Login");
 		btnRegister = new JButton("Register");
 		this.args = args;
+		
+		//TODO
+		inputServerAddress.setText("127.0.0.1");
+		inputUserID.setText("admin");
 		
 		/* set register window */
 		Toolkit tk = Toolkit.getDefaultToolkit();
@@ -169,18 +177,40 @@ class Login extends JFrame{
 		} else {
 			
 			/* create new client */
-			Client client = new Client(serverAddress);
+			if (client==null) {
+				client = new Client(serverAddress);
+			}
 			
 			
 			/* get the correctness of username and password from server */
 			if (client.login(username, password)) {
 				Login.this.dispose(); // close login window
-				try {
-					new Lobby(client).start(new Stage());
-				} catch (Exception e) {
-					System.err.println("[Login_tryLogin] Fail to open Lobby.");
-//					e.printStackTrace();
-				} // open new Lobby window
+				
+//				Lobby lobby = new Lobby(client);
+				Lobby.launch(args);
+				
+//				Application.launch(Lobby.class);
+				
+//				try {
+//					
+////					new Lobby(client).launch(args);
+//					
+//					Platform.runLater(new Runnable() {
+//					    public void run() {             
+//					        try {
+//								new Lobby(client).start(new Stage());
+//							} catch (Exception e) {
+//								System.err.println("[Login_tryLogin] Fail to open Lobby.");
+////								e.printStackTrace();
+//							}
+//					    }
+//					});
+//					
+//				} catch (Exception e) {
+//					System.err.println("[Login_tryLogin] Fail to open Lobby.");
+////					e.printStackTrace();
+//				} // open new Lobby window
+				
 			} else {
 				JOptionPane.showMessageDialog(null, "Cannot connect to server(" + serverAddress + ") or incorrect Username or Password.");
 			}

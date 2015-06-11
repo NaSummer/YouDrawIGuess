@@ -26,6 +26,8 @@ import client.transmission.Client;
 
 public class Register extends JFrame {
 	
+	private Client client;
+	
 	private JLabel JLServerAddress;
 	private JLabel JLUserID;
 	private JLabel JLUserPWD;
@@ -235,7 +237,9 @@ public class Register extends JFrame {
 //			}
 			
 			/* create Register Client */
-			Client client = new Client(serverAdd);
+			if (client==null) {
+				client = new Client(serverAdd);
+			}
 			
 			/* check success */
 			if (client.register(username, password)) {

@@ -79,7 +79,7 @@ public class Client {
 	 */
 	public boolean login(String username, String password) {
 		try {
-			SetPacketData packet = new SetPacketData(Packet.LOGIN, username);
+			Packet packet = new Packet(Packet.LOGIN, username);
 			packet.setPassword(password);
 			sendPacket(packet);
 			Packet receivedPacket;
@@ -104,7 +104,7 @@ public class Client {
 	 */
 	public boolean register(String username, String password) {
 		try {
-			SetPacketData packet = new SetPacketData(Packet.REGISTER, username);
+			Packet packet = new Packet(Packet.REGISTER, username);
 			packet.setPassword(password);
 			sendPacket(packet);
 			Packet receivedPacket;
@@ -174,7 +174,7 @@ public class Client {
 	 * @return [boolean] whether join a room successfully
 	 */
 	public boolean joinRoom(long roomID) {
-		SetPacketData packet = new SetPacketData(Packet.JOIN_ROOM, username);
+		Packet packet = new Packet(Packet.JOIN_ROOM, username);
 		packet.setRoomID(roomID);
 		sendPacket(packet);
 
@@ -204,7 +204,7 @@ public class Client {
 	 * @return [boolean] is successful
 	 */
 	public boolean exitRoom() {
-		SetPacketData packet = new SetPacketData(Packet.EXIT_ROOM, username);
+		Packet packet = new Packet(Packet.EXIT_ROOM, username);
 		sendPacket(packet);
 		
 		long time = System.currentTimeMillis();
@@ -230,7 +230,7 @@ public class Client {
 	 * @return is successful
 	 */
 	public void sendMessage(String str) {
-		SetPacketData packet = new SetPacketData(Packet.ROOM_MESSAGE, username);
+		Packet packet = new Packet(Packet.ROOM_MESSAGE, username);
 		packet.setMessage(str);
 		sendPacket(packet);
 	}
@@ -258,7 +258,7 @@ public class Client {
 	 * @return [boolean] is successful
 	 */
 	public void getReady() {
-		SetPacketData packet = new SetPacketData(Packet.GET_READY, username);
+		Packet packet = new Packet(Packet.GET_READY, username);
 		sendPacket(packet);
 	}
 	
@@ -267,7 +267,7 @@ public class Client {
 	 * @return [boolean] is successful
 	 */
 	public void cancelReady() {
-		SetPacketData packet = new SetPacketData(Packet.CANCEL_READY, username);
+		Packet packet = new Packet(Packet.CANCEL_READY, username);
 		sendPacket(packet);
 	}
 	

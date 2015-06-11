@@ -30,7 +30,7 @@ public class HandleStream extends Thread{
 			
 			while (true) {
 				
-				GetPacketData packet = (GetPacketData) in.readObject();
+				Packet packet = (Packet) in.readObject();
 				client.pulseListener.setLastPacketTime(System.currentTimeMillis());
 				
 				switch (packet.TYPE) {
@@ -86,7 +86,7 @@ public class HandleStream extends Thread{
 		}
 	}
 	
-	private void startGame(GetPacketData packet) {
+	private void startGame(Packet packet) {
 		client.requirement = packet.getQuestion();
 		client.isGameStart = true;
 		client.isTimeout = false;

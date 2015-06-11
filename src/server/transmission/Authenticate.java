@@ -42,7 +42,7 @@ class Authenticate extends Thread{
 			
 			do {
 				
-				SetPacketData firstPacket = (SetPacketData) in.readObject();
+				Packet firstPacket = (Packet) in.readObject();
 				
 				username = firstPacket.USERNAME;
 				
@@ -57,7 +57,7 @@ class Authenticate extends Thread{
 		
 	}
 	
-	private void sort(SetPacketData packet) {
+	private void sort(Packet packet) {
 		
 		switch (packet.TYPE) {
 		case Packet.REGISTER:
@@ -72,7 +72,7 @@ class Authenticate extends Thread{
 			break;
 		case Packet.LOGIN:
 			
-			if (!checkInfo.isInfoRight(packet.USERNAME, packet.getPassword())) {
+			if (checkInfo.isInfoRight(packet.USERNAME, packet.getPassword())) {
 				authSuccess(packet.USERNAME);
 			} else {
 				authFail();

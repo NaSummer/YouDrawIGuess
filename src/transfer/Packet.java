@@ -1,6 +1,17 @@
 package transfer;
 
+import java.awt.Point;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import server.transmission.HandleRoom;
+import customclass.Message;
+import customclass.Room;
+import customclass.RoomRecurrence;
+import customclass.RoomState;
+import customclass.User;
+import customclass.UserRecurrence;
 
 /**
  * @author Qiufan(Andy) Xu 
@@ -68,6 +79,144 @@ public class Packet implements Serializable{
 		 */
 		this.TYPE = type;
 		this.USERNAME = username;
+	}
+	
+	
+	/* =====================get================== */
+	/**
+	 * getPassword
+	 * @param 
+	 * @return 
+	 */
+	public String getPassword() {
+		return str1;
+	}
+	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 */
+	public long getRoomID() {
+		return long1;
+	}
+	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 */
+	public Point getPoint() {
+		if (TYPE==Packet.POINTS) {
+			return new Point(intArray[0], intArray[1]);
+		} else {
+			return null;
+		}
+	}
+	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 */
+	public Room getRoom() {
+		
+		RoomRecurrence room = new RoomRecurrence(long1);
+		
+		for (int i = 0; i < stringArray.length; i++) {
+			
+			boolean isPainter = false;
+			if (str1.equals(stringArray[i])) {
+				isPainter = true;
+			}
+			
+			boolean isReady = false;
+			if (intArray[i]==1) {
+				isReady = true;
+			}
+			
+			UserRecurrence user = new UserRecurrence(stringArray[i], isPainter, isReady);
+			
+			room.addUser((User)user);
+		}
+		
+		return (Room) room;
+	}
+	
+	public Message getMessage() {
+		if (TYPE == Packet.ROOM_MESSAGE) {
+			return new Message(USERNAME, str1);
+		}
+		return null;
+	}
+	
+	public List<RoomState> getRoomList() {
+		List<RoomState> list = new ArrayList<RoomState>();
+		for (int i = 0; i < longArrat.length; i++) {
+			list.add( new RoomState(longArrat[i], intArray[i]) );
+		}
+		return list;
+	}
+	
+	public String getQuestion() {
+		return str1;
+	}
+	
+	
+	
+	
+	/* =====================set======================= */
+	/**
+	 * login and register
+	 * @param 
+	 * @return 
+	 */
+	public void setPassword(String password) {
+		str1 = password;
+	}
+
+	public void setRoomID(long roomID) {
+		long1 = roomID;
+	}
+	
+	public void setPoint(Point point) {
+		intArray = new int[]{(int)point.getX(), (int)point.getY()};
+	}
+	
+	public void setRoom(Room room) {
+		long1 = room.ROOM_ID;
+		stringArray = new String[room.getUserList().size()];
+		intArray = new int[room.getUserList().size()];
+		
+		for (int i = 0; i < room.getUserList().size(); i++) {
+			stringArray[i] = room.getUserList().get(i).USERNAME;
+			if (room.getUserList().get(i).isReady()) {
+				intArray[i] = 1;
+			} else {
+				intArray[i] = 0;
+			}
+			if (room.getUserList().get(i).isPainter()) {
+				str1 = room.getUserList().get(i).USERNAME;
+			} 
+		}
+	}
+
+	public void setMessage(String str) {
+		str1 = str;
+	}
+	
+	public void setRoomList(List<HandleRoom> roomList) {
+		longArrat = new long[roomList.size()];
+		intArray = new int[roomList.size()];
+		
+		for (int i = 0; i < longArrat.length; i++) {
+			longArrat[i] = roomList.get(i).ROOM_ID;
+			intArray[i] = roomList.get(i).getUserList().size();
+		}
+	}
+
+	public void setQuestion(String string) {
+		str1 = string;
 	}
 	
 }

@@ -42,7 +42,7 @@ public class HandleRoom extends Room implements Runnable{
 		while (!handleStreamList.isEmpty()) {
 			
 			while (!messagesList.isEmpty()) {
-				SetPacketData packet = new SetPacketData(Packet.ROOM_MESSAGE, messagesList.get(0).USERMANE);
+				Packet packet = new Packet(Packet.ROOM_MESSAGE, messagesList.get(0).USERMANE);
 				packet.setMessage(messagesList.get(0).CONTENT);
 				messagesList.remove(0);
 				for (int i = 0; i < handleStreamList.size(); i++) {
@@ -64,7 +64,7 @@ public class HandleRoom extends Room implements Runnable{
 			}
 			
 			if (winner!=null) {
-				SetPacketData packet = new SetPacketData(Packet.WINNER, winner);
+				Packet packet = new Packet(Packet.WINNER, winner);
 				for (int i = 0; i < handleStreamList.size(); i++) {
 					handleStreamList.get(i).sendPacket(packet);
 				}
@@ -253,7 +253,7 @@ public class HandleRoom extends Room implements Runnable{
 	}
 	
 	private void sendRoomState (HandleStream handleStream) {
-		SetPacketData packet = new SetPacketData(Packet.ROOM_STATE, "SYSTEM");
+		Packet packet = new Packet(Packet.ROOM_STATE, "SYSTEM");
 		packet.setRoom(this);
 		handleStream.sendPacket(packet);
 	}
@@ -272,7 +272,7 @@ public class HandleRoom extends Room implements Runnable{
 				
 				while (!pointsList.isEmpty()) {
 					
-					SetPacketData packet = new SetPacketData(Packet.POINTS, userList.get(0).USERNAME);
+					Packet packet = new Packet(Packet.POINTS, userList.get(0).USERNAME);
 					packet.setPoint(pointsList.get(0));
 					pointsList.remove(0);
 					for (int i = 1; i < handleStreamList.size(); i++) {

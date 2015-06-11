@@ -32,7 +32,7 @@ public class PointSender extends Thread{
 				
 				try {
 					
-					SetPacketData packet = new SetPacketData(Packet.POINTS, client.username);
+					Packet packet = new Packet(Packet.POINTS, client.username);
 					packet.setPoint(client.sendingPointList.get(0));
 					
 					client.sendingPointList.remove(0);
