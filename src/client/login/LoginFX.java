@@ -7,9 +7,6 @@ package client.login;
  * @param 
  */
 
-import com.sun.glass.events.KeyEvent;
-import com.sun.javafx.scene.KeyboardShortcutsHandler;
-
 import client.lobby.Lobby;
 import client.transmission.Client;
 import javafx.application.Application;
@@ -25,7 +22,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;

@@ -18,6 +18,9 @@ import javafx.stage.Stage;
 
 public class Lobby extends Application implements EventHandler<ActionEvent>{
 	
+	Lobby lobby = this;
+	public Stage stage;
+	
 	Group root;
 	Canvas canvas;
 	Button createNewRoom;
@@ -30,7 +33,9 @@ public class Lobby extends Application implements EventHandler<ActionEvent>{
 	}
 	
 	@Override
-	public void start(Stage stage) throws Exception {
+	public void start(Stage stage0) throws Exception {
+		
+		this.stage = stage0;
 		
 		stage.setTitle("Game Lobby");
 		root = new Group();  
@@ -55,22 +60,22 @@ public class Lobby extends Application implements EventHandler<ActionEvent>{
 	
 	@Override
 	public void handle(ActionEvent e) {
-		// TODO Auto-generated method stub
+		
 		if(e.getSource()==createNewRoom){
 			client.createRoom();
-			
+			stage.hide();
 			Platform.runLater(new Runnable() {
 				public void run() {             
 					try {
-						new DrawPanel(client).start(new Stage());
-						
+						new DrawPanel(client, lobby).start(new Stage());
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						System.err.println("[Lobby] Fail to open DrawPanel");
+//						e.printStackTrace();
 					}
 				}
 			});
 		}
+		
 		if(e.getSource()==refreshRoom){
 			ArrayList<RoomState> roomList = client.getRoomList();
 			if (roomList!=null) {
@@ -88,21 +93,24 @@ public class Lobby extends Application implements EventHandler<ActionEvent>{
 				}
 			}
 		}
+		
 		for(int i=0;i<buttons.size();i++){
 			if(e.getSource()==buttons.get(i)){
 				client.joinRoom(client.getRoomList().get(i).ROOM_ID);
+				stage.hide();
 				Platform.runLater(new Runnable() {
 					public void run() {             
 						try {
-							new GuessPanel(client).start(new Stage());
+							new GuessPanel(client, lobby).start(new Stage());
 						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							System.err.println("[Lobby] Fail to open GuessPanel");
+//							e.printStackTrace();
 						}
 					}
 				});
 			}
 		}
+		
 	}
 	
 }
