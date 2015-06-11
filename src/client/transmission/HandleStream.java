@@ -54,13 +54,25 @@ public class HandleStream extends Thread{
 					client.receivedPointList.add(packet.getPoint());
 					break;
 					
-				case Packet.value:
-					//TODO
+				case Packet.START_GAME:
+					startGame(packet);
 					break;
 					
-				case Packet.value:
-					//TODO
+				case Packet.EXIT_ROOM_SUCCESS:
+					exitRoom();
 					break;
+					
+				case Packet.TIME_OUT:
+					client.isTimeout = true;
+					break;
+					
+				case Packet.WINNER:
+					client.winner = packet.USERNAME;
+					break;
+					
+//				case Packet.value:
+//					//TODO
+//					break;
 					
 				default:
 					break;
@@ -74,5 +86,19 @@ public class HandleStream extends Thread{
 		}
 	}
 	
+	private void startGame(GetPacketData packet) {
+		client.requirement = packet.getQuestion();
+		client.isGameStart = true;
+		client.isTimeout = false;
+		client.winner = null;
+	}
+	
+	private void exitRoom() {
+		client.room = null;
+		client.requirement = null;
+		client.isGameStart = false;
+		client.isTimeout = false;
+		client.winner = null;
+	}
 	
 }
