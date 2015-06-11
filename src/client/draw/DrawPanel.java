@@ -34,7 +34,7 @@ public class DrawPanel extends Application implements EventHandler<ActionEvent>{
 		// TODO Auto-generated method stub
 		launch();
 	}
-	DrawPanel(Client client){
+	public DrawPanel(Client client){
 		this.client=client;
 	}
 	@Override
