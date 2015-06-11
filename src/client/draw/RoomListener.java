@@ -7,7 +7,7 @@ public class RoomListener extends Thread {
 	public void run() {
 		// TODO Auto-generated method stub
 		while(true){
-			while () {
+			while (true) {
 				
 				
 			}

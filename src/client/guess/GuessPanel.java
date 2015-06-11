@@ -37,9 +37,9 @@ Point poTo;
 		launch();
 	}
 
-	GuessPanel(Client client){
-		this.client=client;
-	}
+//	GuessPanel(Client client){
+//		this.client=client;
+//	}
 	@Override
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
@@ -79,12 +79,12 @@ Point poTo;
         sendButton.setLayoutY(530);
         sendButton.setText("SEND");
         
-        readyButton = new Button("START");
+        readyButton = new Button("Get Ready");
         readyButton.setPrefSize(200, 150);
         readyButton.setLayoutX(300);
         readyButton.setLayoutY(300);
         
-        cancelReadyButton = new Button("START");
+        cancelReadyButton = new Button("Cancel Ready");
         cancelReadyButton.setPrefSize(200, 150);
         cancelReadyButton.setLayoutX(300);
         cancelReadyButton.setLayoutY(300);
