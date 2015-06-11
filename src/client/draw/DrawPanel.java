@@ -1,7 +1,7 @@
 package client.draw;
 
 
-
+import client.guess.*;
 import java.awt.Point;
 import java.util.ArrayList;
 
@@ -115,6 +115,7 @@ public class DrawPanel extends Application implements EventHandler<ActionEvent>{
         primaryStage.setResizable(false);
         primaryStage.show(); 
         new Thread(new MessageListener(client, showMessage)).start();
+        new Thread(new StateListener(client, member)).start();
 	}
 	public void drawShapesAndSendPoints() {
 		//use client API to send points;

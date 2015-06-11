@@ -109,6 +109,7 @@ Point poTo;
 		stage.show();
 		receive();
 		new Thread(new MessageListener(client, showMessage)).start();
+		new Thread(new StateListener(client, member)).start();
 	}
 	@Override
 	public void handle(ActionEvent e) {
