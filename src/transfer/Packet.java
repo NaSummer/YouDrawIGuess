@@ -126,9 +126,9 @@ public class Packet implements Serializable{
 		for (int i = 0; i < stringArray.length; i++) {
 			
 			boolean isPainter = false;
-			if (str1.equals(stringArray[i])) {
-				isPainter = true;
-			}
+//			if (str1.equals(stringArray[i])) {
+//				isPainter = true;
+//			}
 			
 			boolean isReady = false;
 			if (intArray[i]==1) {
@@ -195,9 +195,9 @@ public class Packet implements Serializable{
 			} else {
 				intArray[i] = 0;
 			}
-			if (room.getUserList().get(i).isPainter()) {
-				str1 = room.getUserList().get(i).USERNAME;
-			} 
+//			if (room.getUserList().get(i).isPainter()) {
+//				str1 = room.getUserList().get(i).USERNAME;
+//			} 
 		}
 	}
 
