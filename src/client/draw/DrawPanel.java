@@ -3,6 +3,7 @@ package client.draw;
 
 import client.guess.*;
 import client.lobby.Lobby;
+import client.login.LoginFX;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -140,7 +141,9 @@ public class DrawPanel extends Application implements EventHandler<ActionEvent>{
 			}
 		});
 		
-		primaryStage.setScene(new Scene(root));
+		Scene scene = new Scene(root);
+		scene.getStylesheets().add(DrawPanel.class.getResource("drawPanel.css").toExternalForm());
+		primaryStage.setScene(scene);
 		primaryStage.setResizable(false);
 		primaryStage.show(); 
 		new Thread(new MessageListener(client, showMessage)).start();

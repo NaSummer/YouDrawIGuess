@@ -69,7 +69,7 @@ public class LoginFX extends Application {
         
         
         scenetitle = new Text("Welcome");
-        scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+        scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 40));
         grid.add(scenetitle, 0, 0, 2, 1);
         
         
@@ -131,7 +131,7 @@ public class LoginFX extends Application {
             }
         });
 
-        scene = new Scene(grid, 300, 275);
+        scene = new Scene(grid, 1000, 600);
         scene.getStylesheets().add(LoginFX.class.getResource("loginStyle.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();

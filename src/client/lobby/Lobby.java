@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import customclass.RoomState;
 import client.draw.DrawPanel;
 import client.guess.GuessPanel;
+import client.login.LoginFX;
 import client.transmission.Client;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -53,7 +54,9 @@ public class Lobby extends Application implements EventHandler<ActionEvent>{
 		root.getChildren().add(canvas);
 		root.getChildren().add(createNewRoom);
 		root.getChildren().add(refreshRoom);
-		stage.setScene(new Scene(root));
+		Scene scene = new Scene(root);
+		scene.getStylesheets().add(Lobby.class.getResource("lobbyStyle.css").toExternalForm());
+		stage.setScene(scene);
 		stage.setResizable(false);
 		stage.show();
 	}
