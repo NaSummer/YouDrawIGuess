@@ -16,7 +16,7 @@ public class MessageListener extends Thread{
 	public void run() {
 		// TODO Auto-generated method stub
 		while (true) {
-			while (!client.getMessage().CONTENT.isEmpty()) {
+			while (client.getMessage() != null) {
 				showMessage.appendText("[" + client.getMessage().USERMANE + "] said:\n  -> " + client.getMessage().CONTENT + "\n\n");
 				/* 自动滚动到最后一行 */
 				showMessage.positionCaret(showMessage.getText().length());
