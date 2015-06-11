@@ -2,11 +2,14 @@ package client.draw;
 
 
 import client.guess.*;
+import client.lobby.Lobby;
+
 import java.awt.Point;
 import java.util.ArrayList;
 
 import client.transmission.Client;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -14,9 +17,11 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class DrawPanel extends Application implements EventHandler<ActionEvent>{
 	Point ptFrom;
@@ -27,8 +32,9 @@ public class DrawPanel extends Application implements EventHandler<ActionEvent>{
 	TextField member;
 	public TextField showMessage;
 	TextField sendMessage;
-	
+	Label question;
 	Client client;
+	Label winner;
 	ArrayList<Point> sendArrayListPoints;
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -77,7 +83,16 @@ public class DrawPanel extends Application implements EventHandler<ActionEvent>{
         startButton.setLayoutX(300);
         startButton.setLayoutY(300);
         
+        question = new Label(client.getRequirement());
+        question.setPrefSize(150, 100);
+        question.setLayoutX(10);
+        question.setLayoutY(0);
         
+        winner = new Label();
+        winner.setPrefSize(300, 200);
+        winner.setLayoutX(300);
+        winner.setLayoutY(300);
+        winner.setFont(javafx.scene.text.Font.font("Times New Roman", 40));
         
         canvas.setOnMousePressed(new EventHandler<MouseEvent>() {            
         	public void handle(MouseEvent me) {                 
@@ -111,11 +126,31 @@ public class DrawPanel extends Application implements EventHandler<ActionEvent>{
         root.getChildren().add(sendMessage);
         root.getChildren().add(sendButton);
         root.getChildren().add(startButton);
+        root.getChildren().add(question);
+        root.getChildren().add(winner);
+        
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent arg0) {
+                primaryStage.hide();
+                Platform.runLater(new Runnable() {
+ 			       public void run() {             
+ 			           try {
+ 						new Lobby(client).start(new Stage());
+ 					} catch (Exception e) {
+ 						// TODO Auto-generated catch block
+ 						e.printStackTrace();
+ 					}
+ 			       }
+ 			    });
+            }
+        });
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(false);
         primaryStage.show(); 
         new Thread(new MessageListener(client, showMessage)).start();
-        new Thread(new StateListener(client, member)).start();
+        new Thread(new StateListener(client, member,startButton)).start();
+        new Thread(new Win(client,winner)).start();
 	}
 	public void drawShapesAndSendPoints() {
 		//use client API to send points;

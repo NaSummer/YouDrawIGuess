@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 import client.draw.MessageListener;
+import client.draw.Win;
+import client.lobby.Lobby;
 import client.transmission.Client;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -17,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class GuessPanel extends Application implements EventHandler<ActionEvent>{
 Client client;
@@ -105,11 +108,29 @@ Point poTo;
 		root.getChildren().add(sendButton);
 		root.getChildren().add(readyButton);
 		root.getChildren().add(wrong);
+		
+		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent arg0) {
+                stage.hide();
+                Platform.runLater(new Runnable() {
+ 			       public void run() {             
+ 			           try {
+ 						new Lobby(client).start(new Stage());
+ 					} catch (Exception e) {
+ 						// TODO Auto-generated catch block
+ 						e.printStackTrace();
+ 					}
+ 			       }
+ 			    });
+            }
+        });
 		stage.setScene(new Scene(root));
 		stage.show();
 		receive();
 		new Thread(new MessageListener(client, showMessage)).start();
-		new Thread(new StateListener(client, member)).start();
+		new Thread(new StateListener(client, member,readyButton,cancelReadyButton)).start();
+		new Thread(new Win(client,showWinner)).start();
 	}
 	@Override
 	public void handle(ActionEvent e) {

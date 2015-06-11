@@ -1,6 +1,7 @@
 package client.guess;
 
 import customclass.Room;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import client.transmission.Client;
 
@@ -8,9 +9,19 @@ public class StateListener extends Thread {
 	Client client;
 	TextField member;
 	Room room;
-	public StateListener(Client client,TextField member){
+	Button ready;
+	Button cancelReady;
+	Button startButton;
+	public StateListener(Client client,TextField member,Button startButton) {
 		this.client=client;
 		this.member=member;
+		this.startButton=startButton;
+	}
+	public StateListener(Client client,TextField member,Button ready,Button cancelReady){
+		this.client=client;
+		this.member=member;
+		this.ready=ready;
+		this.cancelReady=cancelReady;
 	}
 	@Override
 	public void run() {
@@ -21,12 +32,17 @@ public class StateListener extends Thread {
 				member.appendText(client.getUserState().get(i).USERNAME + client.getUserState().get(i).isReady() + "\n\n");
 				/* 自动滚动到最后一行 */
 				member.positionCaret(member.getText().length());
-				try {
-					sleep(150);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
+				if(client.isGameStart()){
+					ready.setVisible(false);
+					cancelReady.setVisible(false);
+					startButton.setVisible(false);
+					try {
+						sleep(150);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 		}

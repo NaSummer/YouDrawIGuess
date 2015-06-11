@@ -23,9 +23,9 @@ Button createNewRoom;
 Button refreshRoom;
 Client client;
 ArrayList<Button> buttons = new ArrayList<Button>();
-//	public Lobby(Client client) {
-//		this.client=client;
-//	}
+	public Lobby(Client client) {
+		this.client=client;
+	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		launch();
@@ -64,6 +64,7 @@ ArrayList<Button> buttons = new ArrayList<Button>();
 			       public void run() {             
 			           try {
 						new DrawPanel(client).start(new Stage());
+						
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
