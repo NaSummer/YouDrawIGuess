@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javafx.stage.Stage;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -15,10 +17,9 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import client.lobby.Lobby;
-import client.register.Register;
 import client.transmission.Client;
 
-public class Login extends JFrame{
+class Login extends JFrame{
 	
 	private JLabel JLServerAddress;
 	private JLabel JLUserID;
@@ -30,7 +31,7 @@ public class Login extends JFrame{
 	private JButton btnRegister;
 	private String[] args;
 	
-	private Login(String[] args) {
+	Login(String[] args) {
 		JLServerAddress = new JLabel("Server");
 		JLUserID = new JLabel("Username");
 		JLUserPWD = new JLabel("Password");
@@ -174,7 +175,12 @@ public class Login extends JFrame{
 			/* get the correctness of username and password from server */
 			if (client.login(username, password)) {
 				Login.this.dispose(); // close login window
-				new Lobby(client).main(args);; // open new Lobby window
+				try {
+					new Lobby(client).start(new Stage());
+				} catch (Exception e) {
+					System.err.println("[Login_tryLogin] Fail to open Lobby.");
+//					e.printStackTrace();
+				} // open new Lobby window
 			} else {
 				JOptionPane.showMessageDialog(null, "Cannot connect to server(" + serverAddress + ") or incorrect Username or Password.");
 			}
@@ -187,9 +193,5 @@ public class Login extends JFrame{
 		inputUserID.setText(username);
 	}
 	
-	/*  */
-	public static void main(String[] args) {
-		new Login(args);
-	}
 
 }

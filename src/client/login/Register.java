@@ -1,4 +1,4 @@
-package client.register;
+package client.login;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -9,6 +9,9 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import javafx.stage.Stage;
+import javafx.application.Platform;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -16,8 +19,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+
 import client.lobby.Lobby;
-import client.login.Login;
 import client.transmission.Client;
 
 
@@ -239,7 +242,18 @@ public class Register extends JFrame {
 				
 				JOptionPane.showMessageDialog(null, "Register Successful.");
 				Register.this.dispose(); // close the Register window.
-				new Lobby(client).main(args);
+				
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							try {
+								new Lobby(client).start(new Stage());
+							} catch (Exception e) {
+								System.err.println("[Register_tryRegister] Fail to open Lobby.");
+//					e.printStackTrace();
+							}
+						}
+					});
 				
 			} else {
 				
