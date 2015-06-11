@@ -1,3 +1,6 @@
 .root{
 	-fx-background-image: url("3.jpeg"); //讀取背景圖片
 }
+.Label{
+	-fx-font-size: 72px;
+}

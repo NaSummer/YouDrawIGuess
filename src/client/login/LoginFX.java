@@ -132,12 +132,11 @@ public class LoginFX extends Application {
         });
 
         scene = new Scene(grid, 300, 275);
-//        scene.getStylesheets().add(LoginFX.class.getResource("loginStyle.css").toExternalForm());
+        scene.getStylesheets().add(LoginFX.class.getResource("loginStyle.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-    
-    
+       
     
     
     private void trySignIn(String serverAddress, String username, String password) {
