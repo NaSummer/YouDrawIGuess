@@ -3,6 +3,7 @@ package customclass;
 import java.util.ArrayList;
 import java.util.List;
 
+import server.customclass.HandleUser;
 import tool.Tool;
 
 /**
@@ -17,19 +18,31 @@ public class Room {
 	public final long ROOM_ID;
 	public final static int MAX_NUM = 6;
 	
-	protected List<UserState> userList = new ArrayList<UserState>();
+	protected long serverRoomID;
+	protected List<HandleUser> userList = new ArrayList<HandleUser>();
 	
 	public Room() {
-		/**
-		 * 
-		 * @param 
-		 */
+		
 		ROOM_ID = Tool.generateID();
 		System.out.println("A new room("+ROOM_ID+") has been created");
+		
 	}
 
-	public List<UserState> getUserList() {
-		return this.userList;
+	public List<User> getUserList() {
+		List<User> userList = new ArrayList<User>();
+		for (int i = 0; i < this.userList.size(); i++) {
+			userList.add( (User) this.userList.get(i) );
+		}
+		return userList;
+	}
+	
+	/**
+	 * 
+	 * @param 
+	 * @return 
+	 */
+	public long getServerRoomID() {
+		return serverRoomID;
 	}
 	
 }

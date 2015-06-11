@@ -11,6 +11,8 @@ public class User {
 
 	public final String USERNAME;
 	protected Room whichRoom = null;
+	protected boolean isPainter = false;
+	protected boolean isReady = false;
 	
 	public User(String username) {
 		/**
@@ -20,60 +22,12 @@ public class User {
 		this.USERNAME = username;
 	}
 	
-	/**
-	 * change user state to be in a room
-	 * @param 
-	 * @return If the user is in a room, return false, otherwise true.
-	 */
-	public boolean joinRoom(Room room) {
-		if (whichRoom == null) {
-			
-			this.whichRoom = room;
-			System.out.println("[User] User("+USERNAME+") is joining Room("+room.ROOM_ID+")");
-			return true;
-			
-		} else {
-			
-			System.err.println("[User] User("+USERNAME+") is in Room("+whichRoom.ROOM_ID+") now, can't join the new room("+room.ROOM_ID+")");
-			return false;
-			
-		}
+	public boolean isReady() {
+		return isReady;
 	}
 	
-	/**
-	 * change user state to be out of a room
-	 * @param 
-	 * @return If the user is not in the right Room passed by param, return false, otherwise true.
-	 */
-	public boolean exitRoom(Room room) {
-		if (whichRoom.equals(room)) { //TODO there may have problem
-			
-			whichRoom = null;
-			System.out.println("[User_exitRoom] User("+USERNAME+") is exiting room("+room.ROOM_ID+")");
-			return true;
-			
-		} else if (whichRoom == null) {
-			
-			System.err.println("[User_exitRoom] User("+USERNAME+") is not in any Room now, no room to exit.");
-			return true;
-			
-		} else {
-			
-			System.err.println("[User_exitRoom] User("+USERNAME+") is not in the Room("+room.ROOM_ID+") but Room("+whichRoom.ROOM_ID+")");
-			return false;
-		}
-	}
-	
-	/**
-	 * exit Room anyway
-	 */
-	public void exitRoom() {
-		if (whichRoom == null) {
-			System.out.println("[User_exitRoom] User("+USERNAME+") is not in any Room now");
-		} else {
-			System.out.println("[User_exitRoom] User("+USERNAME+") is exiting Room("+whichRoom.ROOM_ID+")");
-			whichRoom = null;
-		}
+	public boolean isPainter() {
+		return isReady;
 	}
 	
 }
