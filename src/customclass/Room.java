@@ -45,4 +45,12 @@ public class Room {
 		return serverRoomID;
 	}
 	
+	public void setServerRoomID(long roomID) {
+		serverRoomID = roomID;
+	}
+	
+	public void addUser(User user) {
+		userList.add( (HandleUser) user );
+	}
+	
 }

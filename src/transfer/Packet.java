@@ -8,7 +8,6 @@ import java.util.List;
 import server.transmission.HandleRoom;
 import customclass.Message;
 import customclass.Room;
-import customclass.RoomRecurrence;
 import customclass.RoomState;
 import customclass.User;
 import customclass.UserRecurrence;
@@ -121,7 +120,8 @@ public class Packet implements Serializable{
 	 */
 	public Room getRoom() {
 		
-		RoomRecurrence room = new RoomRecurrence(long1);
+		Room room = new Room();
+		room.setServerRoomID(long1);
 		
 		for (int i = 0; i < stringArray.length; i++) {
 			
