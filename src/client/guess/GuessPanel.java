@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.sun.java.swing.plaf.motif.MotifBorders.MenuBarBorder;
 
+import customclass.Message;
 import client.draw.MessageListener;
 import client.draw.Win;
 import client.lobby.Lobby;
@@ -77,6 +78,7 @@ public class GuessPanel extends Application implements EventHandler<ActionEvent>
 		showMessage.setPrefSize(200, 260);
 		showMessage.setLayoutX(620);
 		showMessage.setLayoutY(230);
+		showMessage.setAlignment(Pos.BOTTOM_LEFT);
 		
 		sendMessage = new TextField();
 //        sendMessage.setPrefSize(200, 260);
@@ -155,9 +157,10 @@ public class GuessPanel extends Application implements EventHandler<ActionEvent>
 				while (client.getRoomID()!=0) {
 					
 //					System.out.println("3");
-					while (client.getMessage() != null) {
-						
-						sb.append("[" + client.getMessage().USERMANE + "] said:/n  -> " + client.getMessage().CONTENT + "\n\n");
+					Message message = client.getMessage();
+					
+					while (message != null) {
+						sb.append("[" + message.USERMANE + "] said:/n  -> " + message.CONTENT + "\n\n");
 						System.out.println("4");
 						
 						updateMessage(sb.toString());

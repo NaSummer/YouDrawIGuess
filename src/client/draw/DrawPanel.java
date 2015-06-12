@@ -8,6 +8,7 @@ import client.login.LoginFX;
 import java.awt.Point;
 import java.util.ArrayList;
 
+import customclass.Message;
 import client.transmission.Client;
 import javafx.application.Application;
 import javafx.concurrent.Service;
@@ -72,6 +73,7 @@ public class DrawPanel extends Application implements EventHandler<ActionEvent>{
 		showMessage.setPrefSize(200, 260);
 		showMessage.setLayoutX(620);
 		showMessage.setLayoutY(230);
+		showMessage.setAlignment(Pos.BOTTOM_LEFT);
 		
 		sendMessage = new TextField();
 //      sendMessage.setPrefSize(200, 260);
@@ -207,11 +209,18 @@ public class DrawPanel extends Application implements EventHandler<ActionEvent>{
 				
 				while (client.getRoomID()!=0) {
 					
-					while (client.getMessage() != null) {
+//					System.out.println("77777777777777777777777777777");
+					
+					Message message = client.getMessage();
+					
+					while (message != null) {
 						
-						sb.append("[" + client.getMessage().USERMANE + "] said:\n  -> " + client.getMessage().CONTENT + "\n\n");
+//						System.out.println("888888888888888");
+						
+						sb.append("[" + message.USERMANE + "] said:\n  -> " + message.CONTENT + "\n\n");
 						
 						updateMessage(sb.toString());
+						
 //						/* 自动滚动到最后一行 */
 //						showMessage.positionCaret(showMessage.getText().length());
 					}

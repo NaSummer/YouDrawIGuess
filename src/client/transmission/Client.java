@@ -85,7 +85,7 @@ public class Client {
 			Packet receivedPacket;
 			receivedPacket = (Packet) in.readObject();
 			if (receivedPacket.TYPE==Packet.AUTH_SUCCESSFUL) {
-				authSuccess();
+				authSuccess(username);
 			}
 		} catch (ClassNotFoundException | IOException e) {
 			System.err.println("[Client_login]");
@@ -110,7 +110,7 @@ public class Client {
 			Packet receivedPacket;
 			receivedPacket = (Packet) in.readObject();
 			if (receivedPacket.TYPE==Packet.AUTH_SUCCESSFUL) {
-				authSuccess();
+				authSuccess(username);
 			}
 		} catch (ClassNotFoundException | IOException e) {
 			System.err.println("[Client_register]");
@@ -284,6 +284,7 @@ public class Client {
 		if (isPainter()) {
 			Packet packet = new Packet(Packet.START_GAME, username);
 			sendPacket(packet);
+			new Thread(new PointSender(this, out)).start();
 		}
 	}
 	
@@ -429,8 +430,9 @@ public class Client {
 	 * @param 
 	 * @return 
 	 */
-	private void authSuccess() {
+	private void authSuccess(String username) {
 		isAuth = true;
+		this.username = username;
 		
 		pulseListener = new PulseListener(this);
 		pulseListenerThread = new Thread(pulseListener);

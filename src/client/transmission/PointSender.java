@@ -46,6 +46,13 @@ public class PointSender extends Thread{
 				}
 			}
 			
+			try {
+				sleep(300);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
 		
 	}

@@ -43,7 +43,7 @@ public class Lobby extends Application implements EventHandler<ActionEvent>{
 		root = new Group();  
 		canvas = new Canvas(850, 600);
 		createNewRoom = new Button("Create A New Room");
-		createNewRoom.setLayoutX(270);
+		createNewRoom.setLayoutX(170);
 		createNewRoom.setLayoutY(570);
 		createNewRoom.setOnAction(this);
 		
